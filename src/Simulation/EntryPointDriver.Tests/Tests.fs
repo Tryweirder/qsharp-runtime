@@ -17,7 +17,7 @@ open Microsoft.VisualStudio.LanguageServer.Protocol
 open Xunit
 
 open Microsoft.Quantum.QsCompiler.CompilationBuilder
-open Microsoft.Quantum.QsCompiler.CsharpGeneration
+open Microsoft.Quantum.QsCompiler.CSharpGeneration
 open Microsoft.Quantum.QsCompiler.ReservedKeywords
 open Microsoft.Quantum.QsCompiler.SyntaxTree
 open Microsoft.Quantum.Simulation.Simulators
@@ -99,11 +99,13 @@ let private compileCSharp (sources : string seq) =
             "System.Runtime.Extensions"
             "System.Runtime.Numerics"
             "Microsoft.Quantum.EntryPointDriver"
+            "Microsoft.Quantum.QSharp.Foundation"
             "Microsoft.Quantum.QSharp.Core"
             "Microsoft.Quantum.QsDataStructures"
             "Microsoft.Quantum.Runtime.Core"
             "Microsoft.Quantum.Simulation.Common"
             "Microsoft.Quantum.Simulators"
+            "Microsoft.Quantum.Targets.Interfaces"
         ]
         |> List.map (fun name -> upcast MetadataReference.CreateFromFile (referencedAssembly name))
 
