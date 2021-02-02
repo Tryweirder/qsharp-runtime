@@ -3,13 +3,12 @@
 #
 add_executable(qir-runtime-unittests
   driver.cpp
-  FullstateSimulatorTests.cpp
   QirRuntimeTests.cpp
   ToffoliTests.cpp
 )
 
 target_link_libraries(qir-runtime-unittests PUBLIC
-  qir-rt
+  qir-rt-support
   simulators
 )
 
