@@ -4,7 +4,7 @@
 namespace Microsoft.Quantum.Testing.QIR
 {
     @EntryPoint()
-    operation Test_Arrays(array : Int[], index : Int, val : Int) : Int
+    operation Test_Arrays(array : Int[], index : Int, val : Int, dummy : Bool) : Int
     {
         // exercise __quantum__rt__array_copy
         mutable local = array;
@@ -12,7 +12,7 @@ namespace Microsoft.Quantum.Testing.QIR
         // exercise __quantum__rt__array_get_element_ptr_1d
         set local w/= index <- val;
 
-        // exercise __quantum__rt__array_get_length
+        // exercise __quantum__rt__array_get_size
         let n = Length(local);
 
         // exercise __quantum__rt__array_slice with various ranges
@@ -29,6 +29,16 @@ namespace Microsoft.Quantum.Testing.QIR
             set sum += result[i];
         }
 
+        // The purpose of this block is to keep the Q# compiler from optimizing away other tests when generating QIR
+        if (dummy)
+        {
+            let res1 = TestControlled();
+            //Q# compiler crashes if both TestControlled and TestPartials are enabled
+            //let res2 = TestPartials(17, 42);
+            let res3 = Test_Qubit_Result_Management();
+        }
+
         return sum;
     }
+
 }
