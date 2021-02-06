@@ -281,3 +281,40 @@ define void @__quantum__qis__z__ctl(%Array* %.ctls, %Qubit* %.q) {
 }
 
 
+;===============================================================================
+; quantum.qis math functions
+;
+
+; LLVM intrinsics (https://llvm.org/docs/LangRef.html):
+declare double      @llvm.sqrt.f64(double %.val)
+
+; Native implementations:
+declare i1          @quantum__qis__isnan__body(double %d)
+declare double      @quantum__qis__infinity__body()
+declare i1          @quantum__qis__isinf__body(double %d)
+
+; API for the user code:
+define double @__quantum__qis__nan__body() {                ; http://www.cplusplus.com/reference/cmath/nan-function/
+  %result = call double @llvm.sqrt.f64(double -1.0)         ; sqrt(<negative>) -> NaN
+  ret double %result
+}
+
+define i1 @__quantum__qis__isnan__body(double %d) {         ; http://www.cplusplus.com/reference/cmath/isnan/
+  %result = call i1 @quantum__qis__isnan__body(double %d)
+  ret i1 %result
+}
+
+define double @__quantum__qis__infinity__body() {           ; https://en.cppreference.com/w/c/numeric/math/INFINITY
+  %result = call double @quantum__qis__infinity__body()
+  ret double %result
+}
+
+define i1 @__quantum__qis__isinf__body(double %d) {         ; https://en.cppreference.com/w/cpp/numeric/math/isinf
+  %result = call i1 @quantum__qis__isinf__body(double %d)   
+  ret i1 %result
+}
+
+define double @__quantum__qis__sqrt__body(double %d) {      ; https://en.cppreference.com/w/cpp/numeric/math/sqrt
+  %result = call double @llvm.sqrt.f64(double %d)           
+  ret double %result
+}
