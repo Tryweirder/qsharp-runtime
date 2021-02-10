@@ -45,6 +45,10 @@ namespace Microsoft.Quantum.Intrinsic {
         body intrinsic;
     }
 
+    operation DrawRandomInt(min : Int, max : Int) : Int {
+        body intrinsic;
+    }
+
 
     operation X(qb : Qubit) : Unit
     is Adj + Ctl {
@@ -100,5 +104,9 @@ namespace Microsoft.Quantum.Intrinsic {
         body (...) {
             return Measure([PauliZ], [qb]);
         }
+    }
+
+    function Message (msg : String) : Unit {
+        body intrinsic;
     }
 }
