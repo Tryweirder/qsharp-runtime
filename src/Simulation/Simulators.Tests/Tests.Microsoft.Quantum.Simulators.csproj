@@ -1,6 +1,10 @@
-﻿<Project Sdk="Microsoft.Quantum.Sdk/0.15.2101126940">
+﻿<Project Sdk="Microsoft.Quantum.Sdk/0.15.210223045-alpha">
 
   <Import Project="..\Common\Simulators.Test.props" />
+
+  <PropertyGroup>
+    <QscVerbosity>detailed</QscVerbosity>
+  </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="TestProjects\**" />
