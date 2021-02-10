@@ -105,4 +105,8 @@ namespace Microsoft.Quantum.Intrinsic {
             return Measure([PauliZ], [qb]);
         }
     }
+
+    function Message (msg : String) : Unit {
+        body intrinsic;
+    }
 }
