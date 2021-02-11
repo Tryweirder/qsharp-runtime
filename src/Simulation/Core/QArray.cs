@@ -133,18 +133,19 @@ namespace Microsoft.Quantum.Simulation.Core
 
             public void RemoveReference() => refCount--;
 
-            public void Extend(long newLength)
+            public void Extend(long newLength) =>
+                Extend(Default.OfType<T>(), Convert.ToInt32(newLength - Length));
+
+            /// <summary>
+            /// Extends the length of the array by adding <paramref name="count"/> occurrences of
+            /// <paramref name="value"/>.
+            /// </summary>
+            internal void Extend(T value, long count)
             {
-                var newLengthInt = Convert.ToInt32(newLength);
-                if (storage is null)
-                {
-                    storage = new List<T>(newLengthInt);
-                }
-                else if (storage.Capacity < newLengthInt)
-                {
-                    storage.Capacity = newLengthInt;
-                }
-                storage.AddRange(Enumerable.Repeat(Default.OfType<T>(), newLengthInt - storage.Count));
+                var total = Convert.ToInt32(Length + count);
+                storage ??= new List<T>(total);
+                storage.Capacity = Math.Max(storage.Capacity, total);
+                storage.AddRange(Enumerable.Repeat(value, Convert.ToInt32(count)));
             }
         }
 
@@ -232,14 +233,24 @@ namespace Microsoft.Quantum.Simulation.Core
         }
 
         /// <summary>
-        /// Creates an array of size given by capacity and default-initializes 
-        /// array elements. Uses C# keyword <code>default</code> to initialize array elements. 
+        /// Creates an array of size given by capacity and initializes each array element to the default value it has in
+        /// Q#.
         /// </summary>
         public static QArray<T> Create(long capacity) => new QArray<T>
         {
             storage = new QArrayInner(capacity),
             Length = capacity
         };
+
+        /// <summary>
+        /// Creates an array that contains <paramref name="value"/> repeated <paramref name="count"/> times.
+        /// </summary>
+        internal static QArray<T> Repeat(T value, long count)
+        {
+            var array = new QArray<T> { Length = count };
+            array.storage.Extend(value, count);
+            return array;
+        }
 
         /// <summary>
         /// Creates a copy of this array.
@@ -517,6 +528,16 @@ namespace Microsoft.Quantum.Simulation.Core
             arg;
     }
 
+    /// <summary>
+    /// Contains static methods for creating <see cref="QArray"/>s.
+    /// </summary>
+    public static class QArray
+    {
+        /// <summary>
+        /// Creates an array that contains <paramref name="value"/> repeated <paramref name="count"/> times.
+        /// </summary>
+        public static QArray<T> Repeat<T>(T value, long count) => QArray<T>.Repeat(value, count);
+    }
 
     /// <summary>
     /// This JsonConverter converts instances of IQArray['T] as QArray['T]
@@ -557,4 +578,3 @@ namespace Microsoft.Quantum.Simulation.Core
                 objectType.GetGenericTypeDefinition() == typeof(QArray<>);
     }
 }
-
