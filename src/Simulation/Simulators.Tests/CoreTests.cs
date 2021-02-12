@@ -324,5 +324,11 @@ namespace Microsoft.Quantum.Simulation.Simulators.Tests
         [Fact]
         public void InternalCallables() =>
             OperationsTestHelper.RunWithMultipleSimulators(s => Circuits.InternalCallablesTest.Run(s).Wait());
+
+        [Fact]
+        public void CreateArrayWithNegativeSize() =>
+            Assert.ThrowsAny<Exception>(() =>
+                OperationsTestHelper.RunWithMultipleSimulators(simulator =>
+                    Circuits.CreateArrayWithNegativeSize.Run(simulator).Wait()));
     }
 }
