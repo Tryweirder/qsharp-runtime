@@ -25,14 +25,15 @@
 @5 = internal constant [14 x i8] c"error code: 6\00"
 @6 = internal constant [14 x i8] c"error code: 7\00"
 @7 = internal constant [30 x i8] c"Unexpected measurement result\00"
+@8 = internal constant [5 x i8] c"Test\00"
 @Microsoft__Quantum__Testing__QIR__Subtract = constant [4 x void (%Tuple*, %Tuple*, %Tuple*)*] [void (%Tuple*, %Tuple*, %Tuple*)* @Microsoft__Quantum__Testing__QIR__Subtract__body__wrapper, void (%Tuple*, %Tuple*, %Tuple*)* null, void (%Tuple*, %Tuple*, %Tuple*)* null, void (%Tuple*, %Tuple*, %Tuple*)* null]
 @PartialApplication__2 = constant [4 x void (%Tuple*, %Tuple*, %Tuple*)*] [void (%Tuple*, %Tuple*, %Tuple*)* @Lifted__PartialApplication__2__body__wrapper, void (%Tuple*, %Tuple*, %Tuple*)* null, void (%Tuple*, %Tuple*, %Tuple*)* null, void (%Tuple*, %Tuple*, %Tuple*)* null]
 @MemoryManagement__2 = constant [2 x void (%Tuple*, i64)*] [void (%Tuple*, i64)* @MemoryManagement__2__RefCount, void (%Tuple*, i64)* @MemoryManagement__2__AliasCount]
-@8 = internal constant [20 x i8] c"Pauli value: PauliI\00"
-@9 = internal constant [14 x i8] c"Pauli value: \00"
-@10 = internal constant [7 x i8] c"PauliX\00"
-@11 = internal constant [7 x i8] c"PauliY\00"
-@12 = internal constant [7 x i8] c"PauliZ\00"
+@9 = internal constant [20 x i8] c"Pauli value: PauliI\00"
+@10 = internal constant [14 x i8] c"Pauli value: \00"
+@11 = internal constant [7 x i8] c"PauliX\00"
+@12 = internal constant [7 x i8] c"PauliY\00"
+@13 = internal constant [7 x i8] c"PauliZ\00"
 
 define void @Microsoft__Quantum__Testing__QIR__TestControlled__body() {
 entry:
@@ -883,12 +884,6 @@ declare void @__quantum__qis__x__body(%Qubit*)
 
 declare void @__quantum__rt__qubit_release_array(%Array*)
 
-define i64 @Microsoft__Quantum__Testing__QIR__Subtract__body(i64 %from, i64 %what) {
-entry:
-  %0 = sub i64 %from, %what
-  ret i64 %0
-}
-
 define i64 @Microsoft__Quantum__Testing__QIR__Test_Arrays__body(%Array* %array, i64 %index, i64 %val, i1 %compilerDecoy) {
 entry:
   call void @__quantum__rt__array_update_alias_count(%Array* %array, i64 1)
@@ -956,10 +951,14 @@ then0__1:                                         ; preds = %exit__1
   %res5 = call i64 @Microsoft__Quantum__Testing__QIR__Math__LogTest__body()
   %res6 = call i64 @Microsoft__Quantum__Testing__QIR__Math__ArcTan2Test__body()
   %res7 = call i64 @Microsoft__Quantum__Testing__QIR__Str__PauliToStringTest__body()
+  %res8 = call i64 @Microsoft__Quantum__Testing__QIR__Math__TestDrawRandomInt__body(i64 0, i64 1)
+  %22 = call %String* @__quantum__rt__string_create(i32 4, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @8, i32 0, i32 0))
+  call void @Microsoft__Quantum__Testing__QIR__Out__MessageTest__body(%String* %22)
+  call void @__quantum__rt__string_update_reference_count(%String* %22, i64 -1)
   br label %continue__1
 
 continue__1:                                      ; preds = %then0__1, %exit__1
-  %22 = load i64, i64* %sum
+  %23 = load i64, i64* %sum
   call void @__quantum__rt__array_update_alias_count(%Array* %array, i64 -1)
   call void @__quantum__rt__array_update_alias_count(%Array* %0, i64 -1)
   call void @__quantum__rt__array_update_alias_count(%Array* %slice1, i64 -1)
@@ -971,7 +970,7 @@ continue__1:                                      ; preds = %then0__1, %exit__1
   call void @__quantum__rt__array_update_reference_count(%Array* %slice2, i64 -1)
   call void @__quantum__rt__array_update_reference_count(%Array* %result, i64 -1)
   call void @__quantum__rt__array_update_reference_count(%Array* %0, i64 -1)
-  ret i64 %22
+  ret i64 %23
 }
 
 declare %Array* @__quantum__rt__array_copy(%Array*, i1)
@@ -1261,8 +1260,8 @@ continue__12:                                     ; preds = %continue__11
 
 define i64 @Microsoft__Quantum__Testing__QIR__Str__PauliToStringTest__body() {
 entry:
-  %0 = call %String* @__quantum__rt__string_create(i32 19, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @8, i32 0, i32 0))
-  %1 = call %String* @__quantum__rt__string_create(i32 13, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @9, i32 0, i32 0))
+  %0 = call %String* @__quantum__rt__string_create(i32 19, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @9, i32 0, i32 0))
+  %1 = call %String* @__quantum__rt__string_create(i32 13, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @10, i32 0, i32 0))
   %2 = load i2, i2* @PauliI
   %3 = call %String* @__quantum__rt__pauli_to_string(i2 %2)
   %4 = call %String* @__quantum__rt__string_concatenate(%String* %1, %String* %3)
@@ -1278,7 +1277,7 @@ then0__1:                                         ; preds = %entry
   ret i64 1
 
 continue__1:                                      ; preds = %entry
-  %7 = call %String* @__quantum__rt__string_create(i32 6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @10, i32 0, i32 0))
+  %7 = call %String* @__quantum__rt__string_create(i32 6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @11, i32 0, i32 0))
   %8 = load i2, i2* @PauliX
   %9 = call %String* @__quantum__rt__pauli_to_string(i2 %8)
   %10 = call i1 @__quantum__rt__string_equal(%String* %7, %String* %9)
@@ -1293,7 +1292,7 @@ then0__2:                                         ; preds = %continue__1
   ret i64 2
 
 continue__2:                                      ; preds = %continue__1
-  %12 = call %String* @__quantum__rt__string_create(i32 6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @11, i32 0, i32 0))
+  %12 = call %String* @__quantum__rt__string_create(i32 6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @12, i32 0, i32 0))
   %13 = load i2, i2* @PauliY
   %14 = call %String* @__quantum__rt__pauli_to_string(i2 %13)
   %15 = call i1 @__quantum__rt__string_equal(%String* %12, %String* %14)
@@ -1310,7 +1309,7 @@ then0__3:                                         ; preds = %continue__2
   ret i64 3
 
 continue__3:                                      ; preds = %continue__2
-  %17 = call %String* @__quantum__rt__string_create(i32 6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @12, i32 0, i32 0))
+  %17 = call %String* @__quantum__rt__string_create(i32 6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @13, i32 0, i32 0))
   %18 = load i2, i2* @PauliZ
   %19 = call %String* @__quantum__rt__pauli_to_string(i2 %18)
   %20 = call i1 @__quantum__rt__string_equal(%String* %17, %String* %19)
@@ -1338,6 +1337,77 @@ continue__4:                                      ; preds = %continue__3
   call void @__quantum__rt__string_update_reference_count(%String* %17, i64 -1)
   call void @__quantum__rt__string_update_reference_count(%String* %19, i64 -1)
   ret i64 0
+}
+
+define i64 @Microsoft__Quantum__Testing__QIR__Math__TestDrawRandomInt__body(i64 %min, i64 %max) {
+entry:
+  %0 = call i64 @__quantum__qis__drawrandomint__body(i64 %min, i64 %max)
+  ret i64 %0
+}
+
+define void @Microsoft__Quantum__Testing__QIR__Out__MessageTest__body(%String* %msg) {
+entry:
+  call void @__quantum__qis__message__body(%String* %msg)
+  ret void
+}
+
+declare void @__quantum__rt__string_update_reference_count(%String*, i64)
+
+define void @Microsoft__Quantum__Testing__QIR__Subtract__body__wrapper(%Tuple* %capture-tuple, %Tuple* %arg-tuple, %Tuple* %result-tuple) {
+entry:
+  %0 = bitcast %Tuple* %arg-tuple to { i64, i64 }*
+  %1 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %0, i32 0, i32 0
+  %2 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %0, i32 0, i32 1
+  %3 = load i64, i64* %1
+  %4 = load i64, i64* %2
+  %5 = call i64 @Microsoft__Quantum__Testing__QIR__Subtract__body(i64 %3, i64 %4)
+  %6 = bitcast %Tuple* %result-tuple to { i64 }*
+  %7 = getelementptr inbounds { i64 }, { i64 }* %6, i32 0, i32 0
+  store i64 %5, i64* %7
+  ret void
+}
+
+define void @Lifted__PartialApplication__2__body__wrapper(%Tuple* %capture-tuple, %Tuple* %arg-tuple, %Tuple* %result-tuple) {
+entry:
+  %0 = bitcast %Tuple* %capture-tuple to { %Callable*, i64 }*
+  %1 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 1
+  %2 = load i64, i64* %1
+  %3 = bitcast %Tuple* %arg-tuple to { i64 }*
+  %4 = getelementptr inbounds { i64 }, { i64 }* %3, i32 0, i32 0
+  %5 = load i64, i64* %4
+  %6 = call %Tuple* @__quantum__rt__tuple_create(i64 mul nuw (i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i64 2))
+  %7 = bitcast %Tuple* %6 to { i64, i64 }*
+  %8 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %7, i32 0, i32 0
+  %9 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %7, i32 0, i32 1
+  store i64 %2, i64* %8
+  store i64 %5, i64* %9
+  %10 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 0
+  %11 = load %Callable*, %Callable** %10
+  call void @__quantum__rt__callable_invoke(%Callable* %11, %Tuple* %6, %Tuple* %result-tuple)
+  call void @__quantum__rt__tuple_update_reference_count(%Tuple* %6, i64 -1)
+  ret void
+}
+
+define void @MemoryManagement__2__RefCount(%Tuple* %capture-tuple, i64 %count-change) {
+entry:
+  %0 = bitcast %Tuple* %capture-tuple to { %Callable*, i64 }*
+  %1 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 0
+  %2 = load %Callable*, %Callable** %1
+  call void @__quantum__rt__callable_memory_management(i32 0, %Callable* %2, i64 %count-change)
+  call void @__quantum__rt__callable_update_reference_count(%Callable* %2, i64 %count-change)
+  call void @__quantum__rt__tuple_update_reference_count(%Tuple* %capture-tuple, i64 %count-change)
+  ret void
+}
+
+define void @MemoryManagement__2__AliasCount(%Tuple* %capture-tuple, i64 %count-change) {
+entry:
+  %0 = bitcast %Tuple* %capture-tuple to { %Callable*, i64 }*
+  %1 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 0
+  %2 = load %Callable*, %Callable** %1
+  call void @__quantum__rt__callable_memory_management(i32 1, %Callable* %2, i64 %count-change)
+  call void @__quantum__rt__callable_update_alias_count(%Callable* %2, i64 %count-change)
+  call void @__quantum__rt__tuple_update_alias_count(%Tuple* %capture-tuple, i64 %count-change)
+  ret void
 }
 
 define void @Microsoft__Quantum__Testing__QIR__Qop__body(%Qubit* %q, i64 %n) {
@@ -1405,62 +1475,19 @@ entry:
   ret void
 }
 
-define void @Microsoft__Quantum__Testing__QIR__Subtract__body__wrapper(%Tuple* %capture-tuple, %Tuple* %arg-tuple, %Tuple* %result-tuple) {
+define i64 @Microsoft__Quantum__Testing__QIR__Subtract__body(i64 %from, i64 %what) {
 entry:
-  %0 = bitcast %Tuple* %arg-tuple to { i64, i64 }*
-  %1 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %0, i32 0, i32 0
-  %2 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %0, i32 0, i32 1
-  %3 = load i64, i64* %1
-  %4 = load i64, i64* %2
-  %5 = call i64 @Microsoft__Quantum__Testing__QIR__Subtract__body(i64 %3, i64 %4)
-  %6 = bitcast %Tuple* %result-tuple to { i64 }*
-  %7 = getelementptr inbounds { i64 }, { i64 }* %6, i32 0, i32 0
-  store i64 %5, i64* %7
-  ret void
+  %0 = sub i64 %from, %what
+  ret i64 %0
 }
 
-define void @Lifted__PartialApplication__2__body__wrapper(%Tuple* %capture-tuple, %Tuple* %arg-tuple, %Tuple* %result-tuple) {
+define i1 @Microsoft__Quantum__Intrinsic__IsInf__body(double %d) {
 entry:
-  %0 = bitcast %Tuple* %capture-tuple to { %Callable*, i64 }*
-  %1 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 1
-  %2 = load i64, i64* %1
-  %3 = bitcast %Tuple* %arg-tuple to { i64 }*
-  %4 = getelementptr inbounds { i64 }, { i64 }* %3, i32 0, i32 0
-  %5 = load i64, i64* %4
-  %6 = call %Tuple* @__quantum__rt__tuple_create(i64 mul nuw (i64 ptrtoint (i64* getelementptr (i64, i64* null, i32 1) to i64), i64 2))
-  %7 = bitcast %Tuple* %6 to { i64, i64 }*
-  %8 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %7, i32 0, i32 0
-  %9 = getelementptr inbounds { i64, i64 }, { i64, i64 }* %7, i32 0, i32 1
-  store i64 %2, i64* %8
-  store i64 %5, i64* %9
-  %10 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 0
-  %11 = load %Callable*, %Callable** %10
-  call void @__quantum__rt__callable_invoke(%Callable* %11, %Tuple* %6, %Tuple* %result-tuple)
-  call void @__quantum__rt__tuple_update_reference_count(%Tuple* %6, i64 -1)
-  ret void
+  %0 = call i1 @__quantum__qis__isinf__body(double %d)
+  ret i1 %0
 }
 
-define void @MemoryManagement__2__RefCount(%Tuple* %capture-tuple, i64 %count-change) {
-entry:
-  %0 = bitcast %Tuple* %capture-tuple to { %Callable*, i64 }*
-  %1 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 0
-  %2 = load %Callable*, %Callable** %1
-  call void @__quantum__rt__callable_memory_management(i32 0, %Callable* %2, i64 %count-change)
-  call void @__quantum__rt__callable_update_reference_count(%Callable* %2, i64 %count-change)
-  call void @__quantum__rt__tuple_update_reference_count(%Tuple* %capture-tuple, i64 %count-change)
-  ret void
-}
-
-define void @MemoryManagement__2__AliasCount(%Tuple* %capture-tuple, i64 %count-change) {
-entry:
-  %0 = bitcast %Tuple* %capture-tuple to { %Callable*, i64 }*
-  %1 = getelementptr inbounds { %Callable*, i64 }, { %Callable*, i64 }* %0, i32 0, i32 0
-  %2 = load %Callable*, %Callable** %1
-  call void @__quantum__rt__callable_memory_management(i32 1, %Callable* %2, i64 %count-change)
-  call void @__quantum__rt__callable_update_alias_count(%Callable* %2, i64 %count-change)
-  call void @__quantum__rt__tuple_update_alias_count(%Tuple* %capture-tuple, i64 %count-change)
-  ret void
-}
+declare i1 @__quantum__qis__isinf__body(double)
 
 define void @Microsoft__Quantum__Intrinsic__X__body(%Qubit* %qubit) {
 entry:
@@ -1492,6 +1519,54 @@ entry:
   ret void
 }
 
+define double @Microsoft__Quantum__Intrinsic__NAN__body() {
+entry:
+  %0 = call double @__quantum__qis__nan__body()
+  ret double %0
+}
+
+declare double @__quantum__qis__nan__body()
+
+define i1 @Microsoft__Quantum__Intrinsic__IsNegativeInfinity__body(double %d) {
+entry:
+  %0 = call i1 @__quantum__qis__isnegativeinfinity__body(double %d)
+  ret i1 %0
+}
+
+declare i1 @__quantum__qis__isnegativeinfinity__body(double)
+
+define i64 @Microsoft__Quantum__Intrinsic__DrawRandomInt__body(i64 %min, i64 %max) {
+entry:
+  %0 = call i64 @__quantum__qis__drawrandomint__body(i64 %min, i64 %max)
+  ret i64 %0
+}
+
+declare i64 @__quantum__qis__drawrandomint__body(i64, i64)
+
+define i1 @Microsoft__Quantum__Intrinsic__IsNan__body(double %d) {
+entry:
+  %0 = call i1 @__quantum__qis__isnan__body(double %d)
+  ret i1 %0
+}
+
+declare i1 @__quantum__qis__isnan__body(double)
+
+define void @Microsoft__Quantum__Intrinsic__Message__body(%String* %msg) {
+entry:
+  call void @__quantum__qis__message__body(%String* %msg)
+  ret void
+}
+
+declare void @__quantum__qis__message__body(%String*)
+
+define double @Microsoft__Quantum__Intrinsic__INFINITY__body() {
+entry:
+  %0 = call double @__quantum__qis__infinity__body()
+  ret double %0
+}
+
+declare double @__quantum__qis__infinity__body()
+
 define %Result* @Microsoft__Quantum__Intrinsic__Measure__body(%Array* %bases, %Array* %qubits) {
 entry:
   call void @__quantum__rt__array_update_alias_count(%Array* %bases, i64 1)
@@ -1503,46 +1578,6 @@ entry:
 }
 
 declare %Result* @__quantum__qis__measure__body(%Array*, %Array*)
-
-define i1 @Microsoft__Quantum__Intrinsic__IsInf__body(double %d) {
-entry:
-  %0 = call i1 @__quantum__qis__isinf__body(double %d)
-  ret i1 %0
-}
-
-declare i1 @__quantum__qis__isinf__body(double)
-
-define double @Microsoft__Quantum__Intrinsic__NAN__body() {
-entry:
-  %0 = call double @__quantum__qis__nan__body()
-  ret double %0
-}
-
-declare double @__quantum__qis__nan__body()
-
-define i1 @Microsoft__Quantum__Intrinsic__IsNan__body(double %d) {
-entry:
-  %0 = call i1 @__quantum__qis__isnan__body(double %d)
-  ret i1 %0
-}
-
-declare i1 @__quantum__qis__isnan__body(double)
-
-define double @Microsoft__Quantum__Intrinsic__INFINITY__body() {
-entry:
-  %0 = call double @__quantum__qis__infinity__body()
-  ret double %0
-}
-
-declare double @__quantum__qis__infinity__body()
-
-define i1 @Microsoft__Quantum__Intrinsic__IsNegativeInfinity__body(double %d) {
-entry:
-  %0 = call i1 @__quantum__qis__isnegativeinfinity__body(double %d)
-  ret i1 %0
-}
-
-declare i1 @__quantum__qis__isnegativeinfinity__body(double)
 
 define void @Microsoft__Quantum__Intrinsic__K__body(%Qubit* %q) {
 entry:
@@ -1572,15 +1607,6 @@ entry:
   ret void
 }
 
-declare double @__quantum__qis__arctan2__body(double, double)
-
-define double @Microsoft__Quantum__Math__PI__body() {
-entry:
-  ret double 0x400921FB54442D18
-}
-
-declare double @__quantum__qis__sqrt__body(double)
-
 define double @Microsoft__Quantum__Math__E__body() {
 entry:
   ret double 0x4005BF0A8B145769
@@ -1588,19 +1614,20 @@ entry:
 
 declare double @__quantum__qis__log__body(double)
 
+declare double @__quantum__qis__sqrt__body(double)
+
+declare double @__quantum__qis__arctan2__body(double, double)
+
+define double @Microsoft__Quantum__Math__PI__body() {
+entry:
+  ret double 0x400921FB54442D18
+}
+
 declare %String* @__quantum__rt__pauli_to_string(i2)
 
 declare %String* @__quantum__rt__string_concatenate(%String*, %String*)
 
-declare void @__quantum__rt__string_update_reference_count(%String*, i64)
-
 declare i1 @__quantum__rt__string_equal(%String*, %String*)
-
-define double @Microsoft__Quantum__Math__Log__body(double %input) {
-entry:
-  %0 = call double @__quantum__qis__log__body(double %input)
-  ret double %0
-}
 
 define double @Microsoft__Quantum__Math__ArcTan2__body(double %y, double %x) {
 entry:
@@ -1611,6 +1638,12 @@ entry:
 define double @Microsoft__Quantum__Math__Sqrt__body(double %d) {
 entry:
   %0 = call double @__quantum__qis__sqrt__body(double %d)
+  ret double %0
+}
+
+define double @Microsoft__Quantum__Math__Log__body(double %input) {
+entry:
+  %0 = call double @__quantum__qis__log__body(double %input)
   ret double %0
 }
 
